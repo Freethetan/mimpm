@@ -1,0 +1,52 @@
+#!/bin/bash
+
+## One line help info
+function alias_help(){
+    echo "advanced alias orginizer"
+}
+
+## Help doc for this alias
+function alias_usage(){
+  echo "INFO: 
+  <mimic>   is an executable that handle calls
+      as an interceptor for existing executable
+        E.g.: ifconfig, git, nc, netstat, ip
+      as a pointer to an existing executable
+        E.g.: if -> ifconfig, g -> git, nt -> netstat
+      as a standalone script
+        E.g.: gw, arr_to_json
+
+  <alias>   is a shortcut for specific <mimic> command
+      <mimic> <alias>     <arg>
+        ip    bridge   10.10.10.0/24  is a script that creates a bridge to some network
+  mimic-a   main mimic alias manager
+USAGE:
+  [mimic-a|<mimic>] <alias> [<arg1>[ <arg2>[...<argN>]]]
+
+ALIASES: predefined aliases for MIMIC-A
+  --mimic-add <mimic> [<exec_path>]  create mimic intercepto to existing executable
+          with <exec_path> will be created a shortcut for existing executable e.g.: g /usr/bin/git
+            crate a standalone executable
+  --mimic-edit <alias>              edit alias in preferred editor
+  --mimic-export <alias>            export and share alias 
+  --mimic-help|--help|-h [<alias>]  show man for given mimic alias
+  --mimic-import <alias.tar>        import shared alias
+  --mimic-link <alias> <lnk>        create a link(ln) for mimic alias e.g.: git --mimic-link banch br
+  --mimic-list                      list defined aliases for current mimic
+  --mimic-proxy                     create an interceptor for any mimic aliases, except defined
+  --mimic-remove <alias>            remove alias
+#  --mimic-disable <alias>          temporary disable 
+#  --mimic-enable <alias>           temporary disable 
+
+"
+}
+
+
+# Current alias worker
+function alias_do(){
+  echo ""
+  echo "mimic-a `alias_help`"
+  alias_usage
+}
+
+

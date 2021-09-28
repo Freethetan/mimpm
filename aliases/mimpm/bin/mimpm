@@ -1,0 +1,10 @@
+#!/bin/bash
+
+MIMIC_BIN=""
+
+if [ -z $1 ];then
+  set -- "--mimic-help"
+fi
+. "$(dirname $0)/../core/mimic-a-lib.sh"
+
+

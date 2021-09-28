@@ -1,0 +1,49 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+# compiled output
+.dist
+.cache
+.npmrc
+.gradle
+
+# Dependencies
+/node_modules
+# Maybe keep frigile tree balance
+# package-lock.json
+
+# profiling files
+chrome-profiler-events*.json
+speed-measure-plugin*.json
+
+# IDEs and editors
+/.idea
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+.vscode
+.history
+
+# misc
+/connect.lock
+/coverage
+/libpeerconnection.log
+npm-debug.log
+yarn-error.log
+testem.log
+/typings
+
+# System Files
+.DS_Store
+Thumbs.db
+
+# Keep it private to each person
+!/aliases
+/aliases/*
+!/aliases/mimpm
+!/bin
+/bin/*
+!/bin/mimpm
+!/shared
+/shared/*

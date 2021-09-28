@@ -1,0 +1,53 @@
+#!/bin/bash
+
+## One line help info
+function alias_help(){
+    echo "Add/create mimic alias"
+}
+
+## Help doc for this alias
+function alias_usage(){
+   echo "USAGE: ${MIMIC_CALLER} ${MIMIC_ALIAS} [name]
+    Create new mimic or alias for binary
+    If called from mimic-a will create new mimic for binary
+    If called from binary[eg: git --mimic-add name ] will create new alias
+"
+}
+
+
+# Current alias worker
+function alias_do(){
+  local newMimic="$1"
+  local newMimicBinPath="${MIMIC_A_PATH}/${newMimic}/bin"
+
+  if [ -z $newMimic ];then
+    echo "Mimic name should be provided"
+    return
+  fi
+  # Check for /
+  local origBin=$(which $newMimic)
+
+  if [ -f "${MIMIC_B_DIR}/${newMimic}" ] ;then
+    echo "Mimic ${newMimic} already exists at
+  ${MIMIC_B_DIR}/${newMimic}
+"
+    return 0;
+  fi
+
+  echo "Creating ${newMimic} mimic structure"
+  mkdir -p "${newMimicBinPath}" 2> /dev/null
+
+  echo "Creating ${newMimic} call interceptor"
+  touch "${newMimicBinPath}/${newMimic}"
+
+  echo '#!/bin/bash' > "${newMimicBinPath}/${newMimic}"
+  echo -ne "\n\n" >> "${newMimicBinPath}/${newMimic}"
+  echo "export MIMIC_BIN=$origBin" >>  "${newMimicBinPath}/${newMimic}"
+  echo ""
+  echo ". ${MIMIC_CORE_DIR}/mimic-a-lib.sh" >>  "${newMimicBinPath}/${newMimic}"
+
+  chmod +x "${newMimicBinPath}/${newMimic}"
+  echo "Enabling ${newMimic} mimic"
+  ln -s "${newMimicBinPath}/${newMimic}" "${MIMIC_B_DIR}/"
+  echo "Done!"
+}
