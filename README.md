@@ -5,7 +5,7 @@ or basically an advanced alias manager<br>
 
 
 #### EXAMPLE: <br>
-1. Create custom alias like:<br>
+1. Mimic with custom alias<br>
 `git sync "WIP: sync state"` - sync current source state with remote repository<br>
 It is an interceptor or \<ALIAS\> `sync` for `git` \<MIMIC\><br>
 Under the hood is does:<br>
@@ -14,7 +14,7 @@ Under the hood is does:<br>
 `git push`
 
 
-2. Create an alias for \<MIMIC\> with specific key <br>
+2. Mimic with shorthand for specific key <br>
 `npx init react-application` - create react project<br>
 It is an interceptor or \<ALIAS\> `init` for `npx` \<BINARY\><br>
 Under the hood is does: <br>
