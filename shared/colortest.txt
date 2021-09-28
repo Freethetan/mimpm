@@ -1,0 +1,48 @@
+#!/bin/bash
+
+
+ESC_CODE="\033["
+
+
+function listColors(){
+  for fgbg in 38 48 ; do # Foreground / Background
+    for color in {0..255} ; do # Colors
+        # Display the color
+        printf "\e[${fgbg};5;%sm  %3s  \e[0m" $color $color
+        # Display 6 colors per lines
+        if [ $((($color + 1) % 6)) == 4 ] ; then
+            echo # New line
+        fi
+    done
+    echo # New line
+  done
+}
+
+
+function helpInfo(){
+   echo "USAGE: `basename $0` [opt] [fgN] [bgN] [N]"
+}
+
+function setBG(){
+   local code=$(echo $1 | sed 's/b//' | sed 's/g//')
+   echo -en "${ESC_CODE}48;5;${code}m"
+}
+
+function setFG(){ 
+   local code=$(echo $1 | sed 's/f//' | sed 's/g//')
+   echo -en "${ESC_CODE}38;5;${code}m"
+}
+
+argv=( $@ )
+for i in `seq 0 $(($# - 1))`;
+do
+    case "${argv[$i]}" in
+        *[h]*) helpInfo;exit 0 ;;
+	'-l') listColors ;;
+	'-c') echo -ne "Code" ;;
+         *[f]?[0-9]*) setFG "${argv[$i]}" ;;
+         *[b]?[0-9]*) setBG "${argv[$i]}" ;;
+	 *) echo -e "${argv[$i]}${ESC_CODE}0m" ;;
+    esac
+done
+

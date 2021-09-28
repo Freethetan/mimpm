@@ -1,0 +1,64 @@
+#!/bin/bash
+
+#:MIMIC=amz
+#:ALIAS=auth=_proxy
+
+# Available environment variables
+# MIMIC_ROOT_DIR     Application root folder [~/.mimic-a]
+# MIMIC_B_DIR        Folder that contains mimic binaries
+# MIMIC_A_DIR        Folder that contains current mimic aliases like eg: --log, --start, reload
+# MIMIC_SHRD_DIR     Folder that contains shared functions that are sourced into alias environment
+# MIMIC_CALLER       Called executable name(mimic) like git / netstat / ifconfig
+# MIMIC_BIN          Original executable path /usr/local/bin/git
+# MIMIC_ALIAS        Called alias name like: git --log  --log is alias
+
+## One line help info
+function alias_help(){
+    echo "List aws roles / authenticate"
+}
+
+## Multiline help doc for this alias
+function alias_usage(){
+   echo "USAGE: ${MIMIC_CALLER} auth <account>
+   Authenticate with given role
+   List available roles if it's not provided
+   "
+}
+
+## Alias worker
+#  If alias is prefixed with ! ( git ! log )
+#  will be executed with original binary as /usr/bin/git log
+##
+function alias_do(){
+  local aws_role=$1
+  if [ -z "$aws_role" ];then
+    yak --list-roles
+    return 1
+  fi
+  if eval $(yak "$aws_role") ;then
+    echo "Authenticated as $aws_role" 
+  else
+    echo "Unable to authenticate as $aws_role"
+    return
+  fi
+
+  echo "------- Execute next block in cli to be able accessing env vars -----------"
+  yak "$aws_role"
+  echo "---------------------------------------------------------------------------"
+  local cfgPath="${HOME}/.aws/config"
+  echo "Creating AWS config
+  $cfgPath"
+  if ! [ -f "$cfgPath" ];then
+    mkdir $(dirname $cfgPath) 2>/dev/null
+    touch $cfgPath
+  fi
+  echo "[default]" > $cfgPath
+  echo "region=us-east-1" >> $cfgPath
+  aws_vars=("aws_access_key_id" "aws_secret_access_key" "aws_session_token")
+  for envVar in "${aws_vars[@]}";do
+    ENVNAME=$(echo ${envVar} | tr '[:lower:]' '[:upper:]')
+    if ! [ -z "${!ENVNAME}" ];then
+      echo "${envVar} = ${!ENVNAME}" >> $cfgPath
+    fi
+  done
+}

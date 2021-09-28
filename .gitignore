@@ -39,12 +39,6 @@ testem.log
 Thumbs.db
 
 # Keep it private to each person
-!/aliases
-/aliases/*
-!/aliases/mimpm
-!/bin
-/bin/*
-!/bin/mimpm
-!/shared
-/shared/*
-!/shared/prompt_user_input.sh
+/aliases/mimpm
+/bin/mimpm
+/core

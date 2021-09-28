@@ -1,0 +1,28 @@
+#!/bin/bash
+
+
+# One line help info
+function alias_help(){
+    echo "pull current branch from origin"
+}
+
+## Help doc for this alias
+function alias_usage(){
+   echo "USAGE: ${MIMIC_CALLER} pull [arg1 [arg2 [...[argN]]]]"
+}
+
+## Current alias worker
+#  If alias is prefixed with ! ( git ! log ) 
+#  will be executed with original binary as /usr/bin/git log
+#
+function alias_do(){
+  CURR_BR_NAME="$1"
+  if [ -z "$1" ];then
+    CURR_BR_NAME="origin "$(${MIMIC_BIN} status | grep 'On branch' | sed 's/On branch //')
+  else
+    shift
+  fi
+  echo "Pulling branch [${CURR_BR_NAME}]"
+  ${MIMIC_BIN} pull $* ${CURR_BR_NAME}
+  date
+}

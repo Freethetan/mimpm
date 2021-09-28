@@ -1,0 +1,32 @@
+#!/bin/bash
+
+#:MIMIC=git
+#:ALIAS=lsc
+
+# Available environment variables
+# MIMIC_ROOT_DIR     Application root folder [~/.mimic-a]
+# MIMIC_B_DIR        Folder that contains mimic binaries
+# MIMIC_A_DIR        Folder that contains current mimic aliases like eg: --log, --start, reload
+# MIMIC_SHRD_DIR     Folder that contains shared functions that are sourced into alias environment
+# MIMIC_CALLER       Called executable name(mimic) like git / netstat / ifconfig
+# MIMIC_BIN          Original executable path /usr/local/bin/git
+# MIMIC_ALIAS        Called alias name like: git --log  --log is alias
+
+## One line help info
+function alias_help(){
+    echo "log one line"
+}
+
+## Multiline help doc for this alias
+function alias_usage(){
+   echo "USAGE: ${MIMIC_CALLER} lsc"
+}
+
+## Alias worker
+#  If alias is prefixed with ! ( git ! log )
+#  will be executed with original binary as /usr/bin/git log
+##
+function alias_do(){
+  ${MIMIC_BIN} log --oneline $*
+  date
+}
