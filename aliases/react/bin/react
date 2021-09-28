@@ -1,0 +1,5 @@
+#!/bin/bash
+
+
+export MIMIC_BIN=
+. /home/viktor/.mimic-a/core/mimic-a-lib.sh
