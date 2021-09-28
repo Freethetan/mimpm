@@ -40,13 +40,6 @@ MIMIC_EDITOR_FILE="$MIMIC_CORE_DIR/mimic-editor.txt"
 # Mimic editor
 MIMIC_EDITOR="$(cat $MIMIC_CORE_DIR/mimic-editor.txt | sed 's/\n//g' )"
 
-if [ -z "$MIMIC_EDITOR" ] && ! [ -z "$EDITOR" ];then
-  MIMIC_EDITOR="$EDITOR"
-fi
-
-if [ -z "$MIMIC_EDITOR" ];then
-  MIMIC_EDITOR="/usr/bin/nano"
-fi
 
 #echo "MIMIC BIN: $MIMIC_BIN"
 #echo "ENV CALL: $MIMIC_CALLER"
